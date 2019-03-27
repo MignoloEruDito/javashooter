@@ -18,8 +18,8 @@
         var time = 0;
         var cycle = 0;
         var bulletts =[];
-        const BULLETTS_NUMBER = 10;
-        const TOTAL_DELAY = 96;
+        const BULLETTS_NUMBER = 30;
+        const TOTAL_DELAY = 150;
 
         function startGame() {
             gameArea.start();
@@ -89,14 +89,53 @@
             if (gameArea.keys && gameArea.keys[38]) { if (character.y > 0) character.speedY = -10; }
             if (gameArea.keys && gameArea.keys[40]) { if (character.y < gameArea.canvas.height - 30) character.speedY = 10; }
             if (gameArea.keys && gameArea.keys[72] && waitHide == 0)  { character.hide = !character.hide; waitHide=10;}
+            
+            if(gameArea.keys && gameArea.keys[65] && bulletts[0].waitBullet == 0){//A
+                    bulletts[0].x = character.x ;
+                    bulletts[0].y = character.y + character.height/2;
+                    bulletts[0].speedX = -5;
+                    bulletts[0].hide = false;
+                    bulletts[0].waitBullet = TOTAL_DELAY;
+                    bulletts.forEach(element => {
+                        element.waitBullet = TOTAL_DELAY;
+                    });
+            }
+            
+            if(gameArea.keys && gameArea.keys[83] && bulletts[0].waitBullet == 0){//S
+                    bulletts[0].x = character.x + character.width/2;
+                    bulletts[0].y = character.y;
+                    bulletts[0].speedY = -5;
+                    bulletts[0].hide = false;
+                    bulletts[0].waitBullet = TOTAL_DELAY;
+                    bulletts.forEach(element => {
+                        element.waitBullet = TOTAL_DELAY;
+                    });
+            }
+
             if(gameArea.keys && gameArea.keys[68] && bulletts[0].waitBullet == 0){//D
                     bulletts[0].x = character.x;
                     bulletts[0].y = character.y + character.height/2;
                     bulletts[0].speedX = 5;
                     bulletts[0].hide = false;
                     bulletts[0].waitBullet = TOTAL_DELAY;
+                    bulletts.forEach(element => {
+                        element.waitBullet = TOTAL_DELAY;
+                    });
+            }
+
+            if(gameArea.keys && gameArea.keys[87] && bulletts[0].waitBullet == 0){//W
+                    bulletts[0].x = character.x + character.width/2;
+                    bulletts[0].y = character.y ;
+                    bulletts[0].speedY = 5;
+                    bulletts[0].hide = false;
+                    bulletts[0].waitBullet = TOTAL_DELAY;
+                    bulletts.forEach(element => {
+                        element.waitBullet = TOTAL_DELAY;
+                    });
             }
             
+
+
             updateTimers();
             appearBullet();
             updateBullets();
@@ -118,20 +157,25 @@
             if(element.waitBullet==0){
                 element.hide=true;
                 element.speedX = 0;
+                element.speedY = 0;
             }
         });        
     }
 
     function appearBullet(){
-        bulletts.forEach(element=>{
-        if(element.waitBullet %(TOTAL_DELAY/BULLETTS_NUMBER)==0 && gameArea.keys && gameArea.keys[68]){
-                    element.x = character.x;
-                    element.y = character.y + character.height/2;
-                    element.speedX = 5;
-                    element.hide = false;
-                    element.waitBullet = TOTAL_DELAY;
+
+        for(var i = 0 ; i<bulletts.length ; i++){
+            if(bulletts[i].waitBullet == i*TOTAL_DELAY/BULLETTS_NUMBER && gameArea.keys && gameArea.keys[68]){
+                bulletts[i].x = character.x;
+                bulletts[i].y = character.y + character.height/2;
+                bulletts[i].speedX = 5;
+              //  bulletts[i].speedY = bulletts[0].speedY;
+                
+                bulletts[i].hide = false;
+                bulletts[i].waitBullet = TOTAL_DELAY;
             }
-        });
+        }
+        
     }
 
     </script>
